@@ -5,11 +5,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+//import notes.dto.UserDtoServer;
+import notes.models.UserServer;
+import notes.repositories.UsersRepository;
 
 //import notes.dto.UserDtoClient;
 //import notes.models.UserClient;
@@ -25,23 +29,21 @@ public class SecurityConfiguration {
 		return new BCryptPasswordEncoder();
 	}
 
-//    @Bean
-//    UserDetailsService userDetailsService(RestClientUsers restClientUsers) {
-//		/*
-//		 * Лямбда-функция реализует метод loadUserByUsername() интерфейса 
-//		 * UserDetailsService и возвращает службу хранения учетных записей 
-//		 * пользователей (то есть объект UserDetailsService)
-//		 * */
-//		return username -> {
-//			UserDtoClient dto = restClientUsers.getUserByUsername(username); 
-//			UserClient user = null; 
-//			if (dto != null) {
-//				user = new UserClient(dto);
-//				return user;
-//			}
-//			throw new UsernameNotFoundException("User '"  + username + "' not found!");
-//		};
-//	}
+    @Bean
+    UserDetailsService userDetailsService(UsersRepository repository) {
+		/*
+		 * Лямбда-функция реализует метод loadUserByUsername() интерфейса 
+		 * UserDetailsService и возвращает службу хранения учетных записей 
+		 * пользователей (то есть объект UserDetailsService)
+		 * */
+		return username -> {
+			UserServer user = repository.findByUsername(username);
+			if (user != null) {
+				return user;
+			}
+			throw new UsernameNotFoundException("User '"  + username + "' not found!");
+		};
+	}
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +51,8 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests( (authorizeHttpRequests) ->
 						authorizeHttpRequests
 							.requestMatchers("/api/notes", "/api/notes/**").authenticated()
-							.requestMatchers(HttpMethod.POST, "/api/users").permitAll() )
+							.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+							.requestMatchers("/", "/**").permitAll() )
 				
 				/*
 				 * Ниже следующая настройка исключает (отключает) защиту CSRF при выполнении 

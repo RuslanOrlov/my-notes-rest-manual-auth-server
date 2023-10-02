@@ -82,7 +82,7 @@ public class UserServer implements UserDetails {
 		return true;
 	}
 	
-	public UserDtoServer UserToDto() {
+	public UserDtoServer userToDto() {
 		UserDtoServer dto = new UserDtoServer();
 		
 		dto.setId(this.id);

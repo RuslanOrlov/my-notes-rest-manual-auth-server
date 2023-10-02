@@ -42,7 +42,7 @@ public class UsersRestController {
 		if (user == null)
 			return null;
 		
-		return user.UserToDto();
+		return user.userToDto();
 	}
 	
 }
