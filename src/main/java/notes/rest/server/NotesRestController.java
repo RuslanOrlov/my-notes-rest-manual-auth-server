@@ -30,7 +30,7 @@ import notes.repositories.NotesRepository;
 //@Slf4j
 @RestController
 @RequestMapping(path = "/api/notes", produces = "application/json")
-//@CrossOrigin(origins = "http://localhost:8080/")
+//@CrossOrigin(origins = {"http://localhost:8081/", "http://localhost:8082/"})
 public class NotesRestController {
 	
 	private NotesRepository notesRepository;
