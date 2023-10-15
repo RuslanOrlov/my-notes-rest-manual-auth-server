@@ -67,13 +67,13 @@ public class SecurityConfiguration {
 				
 				/* 
 				 * При отсутствии ниже следующей настройки ".httpBasic()" выходит ошибка: 
-				 * 	 (когда приложение было в виде единого монолита)
+				 * 	 (когда приложение разработано в виде единого монолита)
 				 *   "org.springframework.web.client.UnknownContentTypeException: 
 				 *   Could not extract response: no suitable HttpMessageConverter 
 				 *   found for response type [class [Lnotes.models.Note;] and content 
 				 *   type [text/html;charset=UTF-8]"
 				 *   		ИЛИ
-				 *   (когда приложение клиента разработано отдельно отдельно от сервера)
+				 *   (когда приложение клиента разработано отдельно от сервера)
 				 *   org.springframework.web.client.HttpClientErrorException$Forbidden: 403 : 
 				 *   "{"timestamp":"2023-10-15T13:37:15.324+00:00","status":403,"error":
 				 *   "Forbidden","message":"Access Denied","path":"/api/notes"}"
